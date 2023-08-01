@@ -1,0 +1,73 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background: rgb(255, 239, 223);
+  padding-top:50px;
+}
+
+.container {
+  width: 90%;
+  margin: auto;
+}
+
+.copy-button {
+  background-image: url(./copy.png);
+  position: absolute;
+  background-color: rgb(255, 239, 223);
+  width: 64px;
+  height: 64px;
+  border-width: 0;
+  cursor: pointer;
+}
+
+.delete-button {
+  background-image: url(./delete.png);
+  position: absolute;
+  left: 30px;
+  background-color: rgb(255, 239, 223);
+  width: 64px;
+  height: 64px;
+  border-width: 0;
+  cursor: pointer;
+}
+
+textarea {
+  height:auto;
+  min-width: 90%;
+  min-height: 230px;
+  color:#0b0202;
+  font-weight:400;
+  font-size:30px;
+  font-family:'Ubuntu', Helvetica, Arial, sans-serif;
+  background:#fff;
+  line-height:2em;
+  box-shadow:0px 0px 5px 1px rgba(0,0,0,0.1);
+  padding:10px;
+  -webkit-transition: height 2s ease;
+  -moz-transition: height 2s ease;
+  -ms-transition: height 2s ease;
+  -o-transition: height 2s ease;
+  transition: height 2s ease;
+  margin-bottom: 60px;
+}
+
+textarea::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
+
+.add-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #3d8fe6;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  display: block;
+  margin: auto;
+}
