@@ -17,7 +17,6 @@ function createNewInput () {
         notepad.id = generateUniqueId();
         notepad.onclick = onClick
   const textArea = document.createElement('textarea');
-  textArea.oninput = autoHeight;
   const copyButton = document.createElement('button');
         copyButton.className = 'copy-button';
   const deleteButton = document.createElement('button');
@@ -27,11 +26,6 @@ function createNewInput () {
   notepad.appendChild(copyButton);
   notepad.appendChild(deleteButton);
   container.appendChild(notepad);
-
-  function autoHeight() {
-    this.style.height = 'auto';
-    this.style.height = this.scrollHeight + 'px';
-  }
 
   function onClick() {
     const id = this.id;

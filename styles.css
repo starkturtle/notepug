@@ -36,29 +36,23 @@ body {
 }
 
 textarea {
-  height:auto;
-  min-width: 90%;
-  min-height: 230px;
+  resize: vertical;
+  height: 100px;
+  width: 50%;
   color:#0b0202;
   font-weight:400;
-  font-size:30px;
+  font-size:15px;
   font-family:'Ubuntu', Helvetica, Arial, sans-serif;
   background:#fff;
   line-height:2em;
   box-shadow:0px 0px 5px 1px rgba(0,0,0,0.1);
-  padding:10px;
-  -webkit-transition: height 2s ease;
-  -moz-transition: height 2s ease;
-  -ms-transition: height 2s ease;
-  -o-transition: height 2s ease;
+  padding:5px;
   transition: height 2s ease;
-  margin-bottom: 60px;
+  margin-bottom: 15px; 
+  border-radius: 5px;
 }
 
-textarea::-webkit-scrollbar {
-  width: 0px;
-  height: 0px;
-}
+
 
 .add-button {
   padding: 10px 20px;
@@ -70,4 +64,13 @@ textarea::-webkit-scrollbar {
   border-radius: 4px;
   display: block;
   margin: auto;
+}
+
+.pug-bg {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 300px;
+  height: 300px;
+  border-radius: 20px;
 }
