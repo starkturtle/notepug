@@ -1,12 +1,11 @@
 * {
   box-sizing: border-box;
-  padding: 0;
-  margin: 0;
 }
 
 body {
   background: rgb(255, 239, 223);
-  padding-top:50px;
+  padding-top: 50px;
+  font-family: 'Roboto', sans-serif;
 }
 
 .container {
@@ -14,45 +13,24 @@ body {
   margin: auto;
 }
 
-.copy-button {
-  background-image: url(./copy.png);
-  position: absolute;
-  background-color: rgb(255, 239, 223);
-  width: 64px;
-  height: 64px;
-  border-width: 0;
-  cursor: pointer;
+.controls {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
 }
 
-.delete-button {
-  background-image: url(./delete.png);
-  position: absolute;
-  left: 30px;
-  background-color: rgb(255, 239, 223);
-  width: 64px;
-  height: 64px;
-  border-width: 0;
-  cursor: pointer;
+#search-input {
+  padding: 8px;
+  width: 30%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
-textarea {
-  resize: vertical;
-  height: 100px;
-  width: 50%;
-  color:#0b0202;
-  font-weight:400;
-  font-size:17px;
-  font-family:'Ubuntu', Helvetica, Arial, sans-serif;
-  background:#fff;
-  line-height:2em;
-  box-shadow:0px 0px 5px 1px rgba(0,0,0,0.1);
-  padding:5px;
-  transition: height 2s ease;
-  margin-bottom: 15px; 
-  border-radius: 5px;
+#font-size-select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
-
-
 
 .add-button {
   padding: 10px 20px;
@@ -62,8 +40,55 @@ textarea {
   border: none;
   cursor: pointer;
   border-radius: 4px;
-  display: block;
-  margin: auto;
+}
+
+.note {
+  position: relative;
+  margin-bottom: 15px;
+  background: #fff;
+  box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.1);
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.note textarea,
+.note .preview {
+  width: 100%;
+  min-height: 100px;
+  border: none;
+  outline: none;
+  resize: vertical;
+  font-size: 16px; /* default */
+  line-height: 1.5;
+}
+
+.note .preview {
+  white-space: pre-wrap;
+}
+
+.note .created-at {
+  font-size: 12px;
+  color: #888;
+  margin-top: 5px;
+}
+
+.note .buttons {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.note .buttons i {
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  color: #333;
+}
+
+.note.hidden {
+  display: none;
 }
 
 .pug-bg {
