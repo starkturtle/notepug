@@ -70,7 +70,7 @@ function createNote(noteData) {
   deleteBtn.textContent = 'Видалити';
   deleteBtn.title = 'Видалити нотатку';
   deleteBtn.onclick = () => {
-    if (confirm('У помічку?')) {
+    if (confirm('У помоєчку?')) {
       deleteNote(noteData.id);
     }
   };
