@@ -1,5 +1,63 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: rgb(255, 239, 223);
+  padding-top: 60px;
+  font-family: 'Roboto', sans-serif;
+  min-height: 100vh;
+  position: relative;
+  margin: 0;
+}
+
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.controls {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+  align-items: center;
+}
+
+#search-input {
+  padding: 10px 12px;
+  flex: 1;
+  min-width: 220px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+#font-size-select {
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+.add-button {
+  padding: 10px 24px;
+  font-size: 16px;
+  background-color: #3d8fe6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.add-button:hover {
+  background-color: #2b7bd1;
+}
+
 .note-wrapper {
-  margin-bottom: 32px; /* більший відступ між нотатками */
+  margin-bottom: 32px;
 }
 
 .note {
@@ -10,11 +68,23 @@
   padding: 16px;
 }
 
+.note textarea {
+  width: 100%;
+  min-height: 120px;
+  border: none;
+  outline: none;
+  resize: vertical;
+  font-size: 16px; /* default, змінюється через JS */
+  line-height: 1.6;
+  font-family: 'Roboto', sans-serif;
+  background: transparent;
+}
+
 .created-at {
   font-size: 13px;
   color: #777;
-  margin-top: 6px;      /* невеликий відступ від блоку нотатки */
-  padding-left: 4px;    /* легке вирівнювання з текстом */
+  margin-top: 6px;
+  padding-left: 4px;
   opacity: 0.9;
 }
 
@@ -34,11 +104,49 @@
 }
 
 .buttons i:hover {
-  color: #e74c3c; /* червоний для видалення при наведенні */
+  color: #e74c3c;
   transform: scale(1.15);
 }
 
-/* Приховані елементи */
-.hidden {
+.note.hidden {
   display: none;
+}
+
+/* Фоновий мопс */
+.pug-bg {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 320px;
+  height: auto;
+  max-width: 35vw;
+  opacity: 0.20;
+  pointer-events: none;
+  z-index: -1;
+  border-top-left-radius: 50% 30%;
+}
+
+/* Адаптація для менших екранів */
+@media (max-width: 900px) {
+  .pug-bg {
+    width: 220px;
+    opacity: 0.18;
+  }
+
+  .controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  #search-input {
+    width: 100%;
+  }
+
+  #font-size-select {
+    width: 100%;
+  }
+
+  .add-button {
+    width: 100%;
+  }
 }
