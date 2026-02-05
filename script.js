@@ -70,7 +70,7 @@ function createNote(noteData) {
   deleteBtn.textContent = 'Видалити';
   deleteBtn.title = 'Видалити нотатку';
   deleteBtn.onclick = () => {
-    if (confirm('У помоєчку?')) {
+    if (confirm('У помічку?')) {
       deleteNote(noteData.id);
     }
   };
@@ -128,7 +128,9 @@ function deleteNote(id) {
   renderNotes(searchInput.value);
 }
 
-searchInput.addEventListener('input', () => renderNotes(searchInput.value));
+searchInput.addEventListener('input', (e) => {
+  renderNotes(e.target.value);
+});
 
 fontSizeSelect.addEventListener('change', applyFontSize);
 
@@ -144,38 +146,38 @@ let dragged = null;
 
 function dragStart(e) {
   dragged = this;
+  e.dataTransfer.effectAllowed = 'move';
   setTimeout(() => this.style.opacity = '0.5', 0);
 }
 
 function dragOver(e) {
   e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
 }
 
 function drop(e) {
   e.preventDefault();
   if (dragged && dragged !== this) {
-    const all = [...notesContainer.children];
+    const all = Array.from(notesContainer.children);
     const fromIndex = all.indexOf(dragged);
     const toIndex = all.indexOf(this);
 
-    if (fromIndex < toIndex) {
-      notesContainer.insertBefore(dragged, this.nextSibling);
-    } else {
-      notesContainer.insertBefore(dragged, this);
-    }
+    if (fromIndex !== -1 && toIndex !== -1) {
+      if (fromIndex < toIndex) {
+        notesContainer.insertBefore(dragged, this.nextSibling);
+      } else {
+        notesContainer.insertBefore(dragged, this);
+      }
 
-    // Оновлюємо масив notes відповідно до нового порядку
-    const newOrder = [];
-    notesContainer.querySelectorAll('.note-wrapper').forEach(wrapper => {
-      const id = wrapper.id.replace('wrapper-', '');
-      const note = notes.find(n => n.id === id);
-      if (note) newOrder.push(note);
-    });
-    notes = newOrder;
-    saveNotes();
+      // Оновлюємо масив notes
+      const newOrder = Array.from(notesContainer.children).map(wrapper => {
+        const id = wrapper.id.replace('wrapper-', '');
+        return notes.find(n => n.id === id);
+      });
+      notes = newOrder.filter(Boolean);
+      saveNotes();
+    }
   }
-  if (dragged) dragged.style.opacity = '1';
-  dragged = null;
 }
 
 function dragEnd() {
