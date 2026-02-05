@@ -6,7 +6,6 @@ const fontSizeSelect = document.getElementById('font-size-select');
 const STORAGE_KEY = 'notepug-notes';
 let notes = loadNotes();
 
-// Debounce
 function debounce(func, delay) {
   let timeout;
   return (...args) => {
@@ -37,7 +36,9 @@ function createNote(noteData) {
   const textarea = document.createElement('textarea');
   textarea.value = noteData.text;
   textarea.placeholder = "Введіть текст нотатки...";
-  textarea.addEventListener('input', debounce(() => updateNoteText(noteData.id, textarea.value), 500));
+  textarea.addEventListener('input', debounce(() => {
+    updateNoteText(noteData.id, textarea.value);
+  }, 500));
 
   const createdAt = document.createElement('div');
   createdAt.className = 'created-at';
@@ -48,28 +49,34 @@ function createNote(noteData) {
   const buttons = document.createElement('div');
   buttons.className = 'buttons';
 
-  const copyIcon = document.createElement('i');
-  copyIcon.setAttribute('data-feather', 'copy');
-  copyIcon.title = "Копіювати";
-  copyIcon.onclick = () => {
-    navigator.clipboard.writeText(textarea.value).then(() => {
-      alert("Скопійовано!");
-    }).catch(() => {
-      alert("Не вдалося скопіювати");
-    });
+  // Кнопка копіювати
+  const copyBtn = document.createElement('button');
+  copyBtn.className = 'action-btn copy-btn';
+  copyBtn.textContent = 'Копіювати';
+  copyBtn.title = 'Скопіювати текст';
+  copyBtn.onclick = () => {
+    if (textarea.value.trim() === '') {
+      alert('Нічого копіювати');
+      return;
+    }
+    navigator.clipboard.writeText(textarea.value)
+      .then(() => alert('Скопійовано!'))
+      .catch(() => alert('Не вдалося скопіювати'));
   };
 
-  const deleteIcon = document.createElement('i');
-  deleteIcon.setAttribute('data-feather', 'trash-2');
-  deleteIcon.title = "Видалити";
-  deleteIcon.onclick = () => {
-    if (confirm("У помічку?")) {
+  // Кнопка видалити
+  const deleteBtn = document.createElement('button');
+  deleteBtn.className = 'action-btn delete-btn';
+  deleteBtn.textContent = 'Видалити';
+  deleteBtn.title = 'Видалити нотатку';
+  deleteBtn.onclick = () => {
+    if (confirm('У помічку?')) {
       deleteNote(noteData.id);
     }
   };
 
-  buttons.appendChild(copyIcon);
-  buttons.appendChild(deleteIcon);
+  buttons.appendChild(copyBtn);
+  buttons.appendChild(deleteBtn);
 
   note.appendChild(textarea);
   note.appendChild(buttons);
@@ -77,7 +84,7 @@ function createNote(noteData) {
   noteWrapper.appendChild(note);
   noteWrapper.appendChild(createdAt);
 
-  // Drag & Drop на wrapper
+  // Drag & Drop
   noteWrapper.addEventListener('dragstart', dragStart);
   noteWrapper.addEventListener('dragover', dragOver);
   noteWrapper.addEventListener('drop', drop);
@@ -95,7 +102,6 @@ function renderNotes(filter = '') {
     }
     notesContainer.appendChild(noteElem);
   });
-  feather.replace();
   applyFontSize();
 }
 
@@ -134,11 +140,11 @@ function applyFontSize() {
 }
 
 // Drag & Drop
-let dragged;
+let dragged = null;
 
 function dragStart(e) {
   dragged = this;
-  setTimeout(() => this.style.opacity = '0.4', 0);
+  setTimeout(() => this.style.opacity = '0.5', 0);
 }
 
 function dragOver(e) {
@@ -147,26 +153,28 @@ function dragOver(e) {
 
 function drop(e) {
   e.preventDefault();
-  if (dragged !== this) {
-    const allWrappers = [...notesContainer.children];
-    const draggedIdx = allWrappers.indexOf(dragged);
-    const targetIdx = allWrappers.indexOf(this);
+  if (dragged && dragged !== this) {
+    const all = [...notesContainer.children];
+    const fromIndex = all.indexOf(dragged);
+    const toIndex = all.indexOf(this);
 
-    if (draggedIdx < targetIdx) {
+    if (fromIndex < toIndex) {
       notesContainer.insertBefore(dragged, this.nextSibling);
     } else {
       notesContainer.insertBefore(dragged, this);
     }
 
-    // Оновлюємо порядок в масиві notes
-    const newOrder = [...notesContainer.children].map(wrapper => {
+    // Оновлюємо масив notes відповідно до нового порядку
+    const newOrder = [];
+    notesContainer.querySelectorAll('.note-wrapper').forEach(wrapper => {
       const id = wrapper.id.replace('wrapper-', '');
-      return notes.find(n => n.id === id);
+      const note = notes.find(n => n.id === id);
+      if (note) newOrder.push(note);
     });
-    notes = newOrder.filter(Boolean);
+    notes = newOrder;
     saveNotes();
   }
-  dragged.style.opacity = '1';
+  if (dragged) dragged.style.opacity = '1';
   dragged = null;
 }
 
@@ -177,5 +185,5 @@ function dragEnd() {
 
 window.onbeforeunload = saveNotes;
 
-// Початковий рендер
+// Початковий запуск
 renderNotes();
