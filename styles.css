@@ -171,3 +171,19 @@ body {
     width: 100%;
   }
 }
+
+.clear-all-btn {
+  padding: 8px 16px;
+  font-size: 15px;
+  background: #ff5252;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-left: auto; /* отодвигает кнопку вправо */
+  transition: background 0.2s;
+}
+
+.clear-all-btn:hover {
+  background: #e53935;
+}
