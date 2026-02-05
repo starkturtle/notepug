@@ -93,69 +93,6 @@ body {
   top: 12px;
   right: 12px;
   display: flex;
-  gap: 14px;
-}
-
-.buttons i {
-  cursor: pointer;
-  width: 24px;
-  height: 24px;
-  color: #444;
-}
-
-.buttons i:hover {
-  color: #e74c3c;
-  transform: scale(1.15);
-}
-
-.note.hidden {
-  display: none;
-}
-
-/* Фоновий мопс */
-.pug-bg {
-  position: fixed;
-  bottom: 0;
-  right: 0;
-  width: 320px;
-  height: auto;
-  max-width: 35vw;
-  opacity: 0.20;
-  pointer-events: none;
-  z-index: -1;
-  border-top-left-radius: 50% 30%;
-}
-
-/* Адаптація для менших екранів */
-@media (max-width: 900px) {
-  .pug-bg {
-    width: 220px;
-    opacity: 0.18;
-  }
-
-  .controls {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  #search-input {
-    width: 100%;
-  }
-
-  #font-size-select {
-    width: 100%;
-  }
-
-  .add-button {
-    width: 100%;
-  }
-}
-
-.buttons {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  display: flex;
   gap: 12px;
 }
 
@@ -190,4 +127,47 @@ body {
 
 .delete-btn:hover {
   background: #ffcdd2;
+}
+
+.note-wrapper.hidden {
+  display: none;
+}
+
+/* Фоновий мопс */
+.pug-bg {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 320px;
+  height: auto;
+  max-width: 35vw;
+  opacity: 1; /* Тепер непрозорий */
+  pointer-events: none;
+  z-index: -1;
+  border-top-left-radius: 50% 30%;
+}
+
+/* Адаптація для менших екранів */
+@media (max-width: 900px) {
+  .pug-bg {
+    width: 220px;
+    opacity: 1;
+  }
+
+  .controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  #search-input {
+    width: 100%;
+  }
+
+  #font-size-select {
+    width: 100%;
+  }
+
+  .add-button {
+    width: 100%;
+  }
 }
