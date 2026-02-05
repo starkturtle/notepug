@@ -6,7 +6,7 @@ const fontSizeSelect = document.getElementById('font-size-select');
 const STORAGE_KEY = 'notepug-notes';
 let notes = loadNotes();
 
-// Debounce function
+// Debounce
 function debounce(func, delay) {
   let timeout;
   return (...args) => {
@@ -15,18 +15,15 @@ function debounce(func, delay) {
   };
 }
 
-// Load notes from localStorage
 function loadNotes() {
   const saved = localStorage.getItem(STORAGE_KEY);
   return saved ? JSON.parse(saved) : [];
 }
 
-// Save notes to localStorage
 function saveNotes() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
 }
 
-// Create a new note element
 function createNote(noteData) {
   const note = document.createElement('div');
   note.className = 'note';
@@ -35,31 +32,44 @@ function createNote(noteData) {
 
   const textarea = document.createElement('textarea');
   textarea.value = noteData.text;
+  textarea.placeholder = "Введіть текст нотатки...";
   textarea.addEventListener('input', debounce(() => updateNoteText(noteData.id, textarea.value), 500));
 
   const preview = document.createElement('div');
   preview.className = 'preview';
-  preview.innerHTML = marked.parse(noteData.text);
+  preview.innerHTML = marked.parse(noteData.text || '');
   preview.style.display = 'none';
 
   const createdAt = document.createElement('span');
   createdAt.className = 'created-at';
-  createdAt.textContent = `Created: ${new Date(noteData.createdAt).toLocaleString('ru-RU', {day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'})}`;
+  createdAt.textContent = `Створено: ${new Date(noteData.createdAt).toLocaleString('uk-UA', {
+    day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'
+  })}`;
 
   const buttons = document.createElement('div');
   buttons.className = 'buttons';
 
   const toggleIcon = document.createElement('i');
-  toggleIcon.setAttribute('data-feather', 'edit');
+  toggleIcon.setAttribute('data-feather', 'edit-3');
+  toggleIcon.title = "Редагувати / Перегляд";
   toggleIcon.onclick = () => togglePreview(note, textarea, preview, toggleIcon);
 
   const copyIcon = document.createElement('i');
   copyIcon.setAttribute('data-feather', 'copy');
-  copyIcon.onclick = () => copyText(noteData.text);
+  copyIcon.title = "Копіювати";
+  copyIcon.onclick = () => {
+    navigator.clipboard.writeText(textarea.value);
+    alert("Скопійовано!");
+  };
 
   const deleteIcon = document.createElement('i');
   deleteIcon.setAttribute('data-feather', 'trash-2');
-  deleteIcon.onclick = () => deleteNote(noteData.id);
+  deleteIcon.title = "Видалити";
+  deleteIcon.onclick = () => {
+    if (confirm("Видалити цю нотатку?")) {
+      deleteNote(noteData.id);
+    }
+  };
 
   buttons.appendChild(toggleIcon);
   buttons.appendChild(copyIcon);
@@ -70,7 +80,6 @@ function createNote(noteData) {
   note.appendChild(createdAt);
   note.appendChild(buttons);
 
-  // Drag events
   note.addEventListener('dragstart', dragStart);
   note.addEventListener('dragover', dragOver);
   note.addEventListener('drop', drop);
@@ -79,7 +88,6 @@ function createNote(noteData) {
   return note;
 }
 
-// Render all notes
 function renderNotes(filter = '') {
   notesContainer.innerHTML = '';
   notes.forEach(noteData => {
@@ -89,11 +97,10 @@ function renderNotes(filter = '') {
     }
     notesContainer.appendChild(noteElem);
   });
-  feather.replace(); // Init feather icons
+  feather.replace();
   applyFontSize();
 }
 
-// Add new note
 addButton.onclick = () => {
   const newNote = {
     id: Date.now().toString(36),
@@ -105,21 +112,17 @@ addButton.onclick = () => {
   renderNotes(searchInput.value);
 };
 
-// Update note text
 function updateNoteText(id, text) {
   const note = notes.find(n => n.id === id);
-  if (note) {
-    note.text = text;
-    saveNotes();
-  }
+  if (note) note.text = text;
+  saveNotes();
 }
 
-// Toggle edit/preview
 function togglePreview(note, textarea, preview, toggleIcon) {
   if (textarea.style.display === 'none') {
     textarea.style.display = 'block';
     preview.style.display = 'none';
-    toggleIcon.setAttribute('data-feather', 'edit');
+    toggleIcon.setAttribute('data-feather', 'edit-3');
   } else {
     textarea.style.display = 'none';
     preview.style.display = 'block';
@@ -129,22 +132,14 @@ function togglePreview(note, textarea, preview, toggleIcon) {
   feather.replace();
 }
 
-// Copy text
-function copyText(text) {
-  navigator.clipboard.writeText(text);
-}
-
-// Delete note
 function deleteNote(id) {
   notes = notes.filter(n => n.id !== id);
   saveNotes();
   renderNotes(searchInput.value);
 }
 
-// Search filter
 searchInput.addEventListener('input', () => renderNotes(searchInput.value));
 
-// Font size change
 fontSizeSelect.addEventListener('change', applyFontSize);
 
 function applyFontSize() {
@@ -154,36 +149,44 @@ function applyFontSize() {
   });
 }
 
-// Drag & drop
+// Drag & Drop
 let dragged;
 
 function dragStart(e) {
   dragged = this;
-  e.dataTransfer.effectAllowed = 'move';
+  setTimeout(() => this.style.opacity = '0.4', 0);
 }
 
 function dragOver(e) {
   e.preventDefault();
-  e.dataTransfer.dropEffect = 'move';
 }
 
 function drop(e) {
   e.preventDefault();
   if (dragged !== this) {
-    const draggedIndex = notes.findIndex(n => n.id === dragged.id);
-    const targetIndex = notes.findIndex(n => n.id === this.id);
-    [notes[draggedIndex], notes[targetIndex]] = [notes[targetIndex], notes[draggedIndex]];
+    const allNotes = [...notesContainer.children];
+    const draggedIdx = allNotes.indexOf(dragged);
+    const targetIdx = allNotes.indexOf(this);
+    if (draggedIdx < targetIdx) {
+      notesContainer.insertBefore(dragged, this.nextSibling);
+    } else {
+      notesContainer.insertBefore(dragged, this);
+    }
+    // Оновлюємо порядок в масиві notes
+    const newOrder = [...notesContainer.children].map(el => notes.find(n => n.id === el.id));
+    notes = newOrder.filter(Boolean);
     saveNotes();
-    renderNotes(searchInput.value);
   }
-}
-
-function dragEnd() {
+  dragged.style.opacity = '1';
   dragged = null;
 }
 
-// Auto-save on unload
+function dragEnd() {
+  if (dragged) dragged.style.opacity = '1';
+  dragged = null;
+}
+
 window.onbeforeunload = saveNotes;
 
-// Initial render
+// Початковий рендер
 renderNotes();
