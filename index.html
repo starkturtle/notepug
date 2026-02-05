@@ -1,19 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" href="./pug.png">
-  <link rel="stylesheet" href="./styles.css">
-  <title>Notepug</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notepug</title>
+    <link rel="icon" href="./pug.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
 </head>
 <body>
-  <div class="container">
-    
-  </div>
-  <button class="add-button">Додати</button>
-  <script src="./script.js"></script>
-  <img class="pug-bg" src="./pug-bg.jpg" />
+    <div class="container">
+        <div class="controls">
+            <input type="text" id="search-input" placeholder="Search notes...">
+            <select id="font-size-select">
+                <option value="14">Font: 14px</option>
+                <option value="16" selected>Font: 16px</option>
+                <option value="18">Font: 18px</option>
+            </select>
+            <button class="add-button">Add Note</button>
+        </div>
+        <div id="notes-container"></div>
+    </div>
+    <img src="./pug-bg.jpg" class="pug-bg" alt="Pug background">
+    <script src="script.js"></script>
 </body>
 </html>
