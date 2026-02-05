@@ -4,62 +4,76 @@
 
 body {
   background: rgb(255, 239, 223);
-  padding-top: 50px;
+  padding-top: 60px;
   font-family: 'Roboto', sans-serif;
+  min-height: 100vh;
+  position: relative;
 }
 
 .container {
   width: 90%;
-  margin: auto;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .controls {
   display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+  align-items: center;
 }
 
 #search-input {
-  padding: 8px;
-  width: 30%;
+  padding: 10px 12px;
+  flex: 1;
+  min-width: 220px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 6px;
+  font-size: 16px;
 }
 
 #font-size-select {
-  padding: 8px;
+  padding: 10px 12px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 6px;
+  font-size: 16px;
 }
 
 .add-button {
-  padding: 10px 20px;
+  padding: 10px 24px;
   font-size: 16px;
   background-color: #3d8fe6;
-  color: #fff;
+  color: white;
   border: none;
+  border-radius: 6px;
   cursor: pointer;
-  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.add-button:hover {
+  background-color: #2b7bd1;
 }
 
 .note {
   position: relative;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
   background: #fff;
-  box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.1);
-  border-radius: 5px;
-  padding: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-radius: 8px;
+  padding: 16px;
 }
 
 .note textarea,
 .note .preview {
   width: 100%;
-  min-height: 100px;
+  min-height: 120px;
   border: none;
   outline: none;
   resize: vertical;
   font-size: 16px; /* default */
-  line-height: 1.5;
+  line-height: 1.6;
+  font-family: 'Roboto', sans-serif;
 }
 
 .note .preview {
@@ -67,35 +81,53 @@ body {
 }
 
 .note .created-at {
-  font-size: 12px;
-  color: #888;
-  margin-top: 5px;
+  font-size: 13px;
+  color: #777;
+  margin-top: 8px;
+  display: block;
 }
 
 .note .buttons {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 12px;
+  right: 12px;
   display: flex;
-  gap: 10px;
+  gap: 12px;
 }
 
 .note .buttons i {
   cursor: pointer;
   width: 24px;
   height: 24px;
-  color: #333;
+  color: #444;
+}
+
+.note .buttons i:hover {
+  color: #000;
 }
 
 .note.hidden {
   display: none;
 }
 
+/* Мопс фіксований внизу праворуч */
 .pug-bg {
   position: fixed;
   bottom: 0;
   right: 0;
-  width: 300px;
-  height: 300px;
-  border-radius: 22px;
+  width: 320px;
+  height: auto;
+  max-width: 35vw;
+  opacity: 0.20;
+  pointer-events: none;
+  z-index: -1;
+  border-top-left-radius: 50% 30%;
+}
+
+/* Адаптація під менші екрани (хоча мобілки не планується) */
+@media (max-width: 900px) {
+  .pug-bg {
+    width: 220px;
+    opacity: 0.18;
+  }
 }
