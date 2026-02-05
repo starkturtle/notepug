@@ -9,7 +9,7 @@ clearAllButton.textContent = 'Очистити все';
 clearAllButton.className = 'action-btn clear-all-btn';
 clearAllButton.title = 'Видалити всі нотатки';
 clearAllButton.onclick = () => {
-  if (confirm('УДОЛИТЬ')) {
+  if (confirm('У помоєчку?')) {
     notes = [];
     saveNotes();
     renderNotes(searchInput.value);
