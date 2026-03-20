@@ -3,19 +3,18 @@ const notesContainer = document.getElementById('notes-container');
 const searchInput = document.getElementById('search-input');
 const fontSizeSelect = document.getElementById('font-size-select');
 
-// Новая кнопка "Очистити все"
+// Кнопка "Очистити все"
 const clearAllButton = document.createElement('button');
 clearAllButton.textContent = 'Очистити все';
 clearAllButton.className = 'action-btn clear-all-btn';
 clearAllButton.title = 'Видалити всі нотатки';
 clearAllButton.onclick = () => {
-  if (confirm('У помоєчку?')) {
+  if (confirm('Упевнений? Усі нотатки буде видалено.')) {
     notes = [];
     saveNotes();
     renderNotes(searchInput.value);
   }
 };
-// Добавляем кнопку в блок controls
 document.querySelector('.controls').appendChild(clearAllButton);
 
 const STORAGE_KEY = 'notepug-notes';
@@ -39,14 +38,18 @@ function saveNotes() {
 }
 
 function createNote(noteData) {
-  const noteWrapper = document.createElement('div');
-  noteWrapper.className = 'note-wrapper';
-  noteWrapper.id = 'wrapper-' + noteData.id;
-  noteWrapper.draggable = true;
+  const wrapper = document.createElement('div');
+  wrapper.className = 'note-wrapper';
+  wrapper.id = 'wrapper-' + noteData.id;
 
   const note = document.createElement('div');
   note.className = 'note';
-  note.id = noteData.id;
+
+  const createdAt = document.createElement('div');
+  createdAt.className = 'created-at';
+  createdAt.textContent = `Створено: ${new Date(noteData.createdAt).toLocaleString('uk-UA', {
+    day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'
+  })}`;
 
   const textarea = document.createElement('textarea');
   textarea.value = noteData.text;
@@ -55,22 +58,17 @@ function createNote(noteData) {
     updateNoteText(noteData.id, textarea.value);
   }, 500));
 
-  const createdAt = document.createElement('div');
-  createdAt.className = 'created-at';
-  createdAt.textContent = `Створено: ${new Date(noteData.createdAt).toLocaleString('uk-UA', {
-    day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'
-  })}`;
-
-  const buttons = document.createElement('div');
-  buttons.className = 'buttons';
+  const actions = document.createElement('div');
+  actions.className = 'note-actions';
 
   const copyBtn = document.createElement('button');
   copyBtn.className = 'action-btn copy-btn';
   copyBtn.textContent = 'Копіювати';
   copyBtn.title = 'Скопіювати текст';
   copyBtn.onclick = () => {
-    if (textarea.value.trim() !== '') {
+    if (textarea.value.trim()) {
       navigator.clipboard.writeText(textarea.value);
+      // можна додати сповіщення, наприклад alert або toast
     }
   };
 
@@ -82,37 +80,31 @@ function createNote(noteData) {
     deleteNote(noteData.id);
   };
 
-  buttons.appendChild(copyBtn);
-  buttons.appendChild(deleteBtn);
+  actions.appendChild(copyBtn);
+  actions.appendChild(deleteBtn);
 
+  note.appendChild(createdAt);
   note.appendChild(textarea);
-  note.appendChild(buttons);
+  note.appendChild(actions);
 
-  noteWrapper.appendChild(note);
-  noteWrapper.appendChild(createdAt);
-
-  noteWrapper.addEventListener('dragstart', dragStart);
-  noteWrapper.addEventListener('dragover', dragOver);
-  noteWrapper.addEventListener('drop', drop);
-  noteWrapper.addEventListener('dragend', dragEnd);
-
-  return noteWrapper;
+  wrapper.appendChild(note);
+  return wrapper;
 }
 
 function renderNotes(filter = '') {
   notesContainer.innerHTML = '';
-  
-  // Сортируем заметки по дате создания (новые сверху)
-  const sortedNotes = [...notes].sort((a, b) => b.createdAt - a.createdAt);
 
-  sortedNotes.forEach(noteData => {
-    const noteElem = createNote(noteData);
+  // Нові зверху
+  const sorted = [...notes].sort((a, b) => b.createdAt - a.createdAt);
+
+  sorted.forEach(noteData => {
+    const elem = createNote(noteData);
     if (filter && !noteData.text.toLowerCase().includes(filter.toLowerCase())) {
-      noteElem.classList.add('hidden');
+      elem.classList.add('hidden');
     }
-    notesContainer.appendChild(noteElem);
+    notesContainer.appendChild(elem);
   });
-  
+
   applyFontSize();
 }
 
@@ -122,7 +114,6 @@ addButton.onclick = () => {
     text: '',
     createdAt: Date.now()
   };
-  // Добавляем в начало массива
   notes.unshift(newNote);
   saveNotes();
   renderNotes(searchInput.value);
@@ -140,9 +131,7 @@ function deleteNote(id) {
   renderNotes(searchInput.value);
 }
 
-searchInput.addEventListener('input', (e) => {
-  renderNotes(e.target.value);
-});
+searchInput.addEventListener('input', e => renderNotes(e.target.value));
 
 fontSizeSelect.addEventListener('change', applyFontSize);
 
@@ -153,51 +142,5 @@ function applyFontSize() {
   });
 }
 
-// Drag & Drop
-let dragged = null;
-
-function dragStart(e) {
-  dragged = this;
-  e.dataTransfer.effectAllowed = 'move';
-  setTimeout(() => this.style.opacity = '0.5', 0);
-}
-
-function dragOver(e) {
-  e.preventDefault();
-  e.dataTransfer.dropEffect = 'move';
-}
-
-function drop(e) {
-  e.preventDefault();
-  if (dragged && dragged !== this) {
-    const all = Array.from(notesContainer.children);
-    const fromIndex = all.indexOf(dragged);
-    const toIndex = all.indexOf(this);
-
-    if (fromIndex !== -1 && toIndex !== -1) {
-      if (fromIndex < toIndex) {
-        notesContainer.insertBefore(dragged, this.nextSibling);
-      } else {
-        notesContainer.insertBefore(dragged, this);
-      }
-
-      // Обновляем порядок в массиве notes
-      const newOrder = Array.from(notesContainer.children).map(wrapper => {
-        const id = wrapper.id.replace('wrapper-', '');
-        return notes.find(n => n.id === id);
-      });
-      notes = newOrder.filter(Boolean);
-      saveNotes();
-    }
-  }
-}
-
-function dragEnd() {
-  if (dragged) dragged.style.opacity = '1';
-  dragged = null;
-}
-
-window.onbeforeunload = saveNotes;
-
-// Начальный рендер
+// Початковий рендер
 renderNotes();
