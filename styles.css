@@ -1,182 +1,190 @@
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 body {
-  background: rgb(255, 239, 223);
-  padding-top: 60px;
-  font-family: 'Roboto', sans-serif;
-  min-height: 100vh;
-  position: relative;
-  margin: 0;
+    background: rgb(255, 239, 223);
+    font-family: 'Roboto', sans-serif;
+    min-height: 100vh;
+    margin: 0;
+    padding: 80px 0 40px;
+    position: relative;
 }
 
 .container {
-  width: 90%;
-  max-width: 1200px;
-  margin: 0 auto;
+    width: 90%;
+    max-width: 1100px;
+    margin: 0 auto;
 }
 
 .controls {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-bottom: 24px;
-  align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 32px;
+    align-items: center;
 }
 
 #search-input {
-  padding: 10px 12px;
-  flex: 1;
-  min-width: 220px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 16px;
+    flex: 1;
+    min-width: 220px;
+    padding: 10px 14px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
 }
 
 #font-size-select {
-  padding: 10px 12px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 16px;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
 }
 
 .add-button {
-  padding: 10px 24px;
-  font-size: 16px;
-  background-color: #3d8fe6;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  white-space: nowrap;
+    padding: 10px 24px;
+    font-size: 16px;
+    background: #3d8fe6;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
 }
 
 .add-button:hover {
-  background-color: #2b7bd1;
+    background: #2b7bd1;
 }
 
 .note-wrapper {
-  margin-bottom: 32px;
+    margin-bottom: 32px;
 }
 
 .note {
-  background: #fff;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  border-radius: 8px;
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-}
-
-.note textarea {
-  width: 100%;
-  min-height: 120px;
-  border: none;
-  outline: none;
-  resize: vertical;
-  font-size: 16px;          /* default, змінюється через JS */
-  line-height: 1.6;
-  font-family: 'Roboto', sans-serif;
-  background: transparent;
-  margin-bottom: 12px;
+    background: white;
+    border-radius: 8px 8px 0 0;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+    padding: 16px;
 }
 
 .created-at {
-  font-size: 13px;
-  color: #777;
-  margin-top: 4px;
-  padding-left: 2px;
-  opacity: 0.9;
-  order: -1;                /* дата зверху */
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 8px;
+}
+
+.note textarea {
+    width: 100%;
+    min-height: 120px;
+    border: none;
+    outline: none;
+    resize: vertical;
+    font-size: 16px;
+    line-height: 1.55;
+    font-family: inherit;
+    background: transparent;
+    padding: 0;
+}
+
+.note-actions-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f9f9f9;
+    border-radius: 0 0 8px 8px;
+    padding: 10px 16px;
+    border-top: 1px solid #eee;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.07);
 }
 
 .note-actions {
-  display: flex;
-  gap: 12px;
-  margin-top: auto;         /* притискає кнопки донизу */
-  padding-top: 8px;
-  border-top: 1px solid #eee;
+    display: flex;
+    gap: 10px;
 }
 
 .action-btn {
-  padding: 8px 16px;
-  font-size: 14px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.15s;
-}
-
-.action-btn:hover {
-  opacity: 0.9;
+    padding: 8px 16px;
+    font-size: 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.13s;
 }
 
 .copy-btn {
-  background: #e8f4fd;
-  color: #0066cc;
+    background: #e3f2fd;
+    color: #1565c0;
+}
+
+.copy-btn:hover {
+    background: #bbdefb;
 }
 
 .delete-btn {
-  background: #ffebee;
-  color: #c62828;
+    background: #ffebee;
+    color: #c62828;
+}
+
+.delete-btn:hover {
+    background: #ffcdd2;
+}
+
+.char-count {
+    font-size: 13.5px;
+    color: #444;
+    font-weight: 500;
+    white-space: nowrap;
 }
 
 .note-wrapper.hidden {
-  display: none;
+    display: none;
 }
 
 /* Фоновий мопс */
 .pug-bg {
-  position: fixed;
-  bottom: 0;
-  right: 0;
-  width: 320px;
-  height: auto;
-  max-width: 35vw;
-  opacity: 1;
-  pointer-events: none;
-  z-index: -1;
-  border-top-left-radius: 50% 30%;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 300px;
+    height: auto;
+    opacity: 0.95;
+    pointer-events: none;
+    z-index: -1;
 }
 
-/* Адаптація */
-@media (max-width: 900px) {
-  .pug-bg {
-    width: 220px;
-  }
-
-  .controls {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  #search-input, #font-size-select, .add-button {
-    width: 100%;
-  }
-
-  .note-actions {
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .action-btn {
-    width: 100%;
-  }
+/* Адаптив */
+@media (max-width: 800px) {
+    .pug-bg { width: 220px; }
+    .controls { flex-direction: column; align-items: stretch; }
+    #search-input, #font-size-select, .add-button { width: 100%; }
 }
 
+@media (max-width: 500px) {
+    .note-actions-wrapper {
+        flex-direction: column;
+        gap: 10px;
+        align-items: stretch;
+        padding: 12px;
+    }
+    .note-actions {
+        justify-content: center;
+    }
+    .char-count {
+        text-align: center;
+    }
+}
+
+/* Кнопка очистити все */
 .clear-all-btn {
-  padding: 8px 16px;
-  font-size: 15px;
-  background: #ff5252;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  margin-left: auto;
-  transition: background 0.2s;
+    margin-left: auto;
+    background: #ef5350;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 15px;
 }
 
 .clear-all-btn:hover {
-  background: #e53935;
+    background: #e53935;
 }
