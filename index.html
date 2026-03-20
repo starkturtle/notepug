@@ -1,21 +1,20 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Notepug</title>
     <link rel="icon" href="./pug.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
     <div class="container">
         <div class="controls">
-            <input type="text" id="search-input" placeholder="Пошук нотаток...">
+            <input type="text" id="search-input" placeholder="Пошук нотаток..." />
             <select id="font-size-select">
                 <option value="14">Шрифт: 14 px</option>
                 <option value="16" selected>Шрифт: 16 px</option>
@@ -24,9 +23,12 @@
             </select>
             <button class="add-button">Додати нотатку</button>
         </div>
+
         <div id="notes-container"></div>
     </div>
-    <img src="./pug-bg.jpg" class="pug-bg" alt="Мопс на фоні">
+
+    <img src="./pug-bg.jpg" class="pug-bg" alt="Мопс на фоні" />
+
     <script src="script.js"></script>
 </body>
 </html>
