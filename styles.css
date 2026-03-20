@@ -7,7 +7,7 @@ body {
     font-family: 'Roboto', sans-serif;
     min-height: 100vh;
     margin: 0;
-    padding: 80px 0 40px;
+    padding: 80px 0 160px;           /* + запас снизу под мопсов */
     position: relative;
 }
 
@@ -139,38 +139,64 @@ body {
     display: none;
 }
 
-/* Фоновий мопс */
-.pug-bg {
+/* ────────────────────────────────────────────────
+   ДВА МОПСА ВНИЗУ
+───────────────────────────────────────────────── */
+
+.pug {
     position: fixed;
     bottom: 0;
-    right: 0;
-    width: 300px;
+    width: 280px;
     height: auto;
-    opacity: 0.95;
-    pointer-events: none;
+    max-width: 32vw;
     z-index: -1;
+    pointer-events: none;
+    opacity: 0.9;
+}
+
+/* Левый мопс */
+.pug-left {
+    left: 0;
+    border-top-right-radius: 45% 60%;
+    border-bottom-right-radius: 45% 60%;
+    transform: translateX(-12%);
+}
+
+/* Правый мопс */
+.pug-right {
+    right: 0;
+    border-top-left-radius: 45% 60%;
+    border-bottom-left-radius: 45% 60%;
+    transform: translateX(12%);
 }
 
 /* Адаптив */
-@media (max-width: 800px) {
-    .pug-bg { width: 220px; }
-    .controls { flex-direction: column; align-items: stretch; }
-    #search-input, #font-size-select, .add-button { width: 100%; }
+@media (max-width: 1000px) {
+    .pug {
+        width: 220px;
+        max-width: 38vw;
+    }
+    .pug-left  { transform: translateX(-18%); }
+    .pug-right { transform: translateX(18%); }
+}
+
+@media (max-width: 700px) {
+    .pug {
+        width: 180px;
+        max-width: 45vw;
+    }
+    body {
+        padding-bottom: 140px;
+    }
 }
 
 @media (max-width: 500px) {
-    .note-actions-wrapper {
-        flex-direction: column;
-        gap: 10px;
-        align-items: stretch;
-        padding: 12px;
+    .pug {
+        width: 140px;
+        max-width: 48vw;
     }
-    .note-actions {
-        justify-content: center;
-    }
-    .char-count {
-        text-align: center;
-    }
+    /* Можно скрыть один из мопсов, если слишком тесно */
+    /* .pug-right { display: none; } */
 }
 
 /* Кнопка очистити все */
